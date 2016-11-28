@@ -1,10 +1,10 @@
 from time import time
 
-from alg.ff import func_testcases
+from alg.euler7 import func
 
 
 def main():
-    func_testcases()
+    func()
 
 
 if __name__ == "__main__":

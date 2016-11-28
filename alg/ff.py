@@ -1,17 +1,9 @@
 from bisect import bisect_left
 
-from . import _input, data_from_input
-
-
-def contains(l, elem):
-    index = bisect_left(l, elem)
-    if index < len(l):
-        return l[index] == elem
-    return False
+from alg.common import func_testcases
 
 
 def closest_value_index(array, value):
-    positive = value > 0
     p = bisect_left(array, value)
 
     if p == 0:
@@ -25,59 +17,27 @@ def closest_value_index(array, value):
 
     if after - value == value - before:
         if after - value < 0:
-            pass
+            return before, p - 1
         else:
-            pass
-        pass
-    elif after - value < value - before:
+            return after, p
+    else:
         return after, p
-    else:
-        return before, p - 1
-    # else:
-    #     if after - value > value - before:
-    #         return after, p
-    #     else:
-    #         return before, p - 1
-
-
-def func_testcases():
-    test = 'Test1'
-    global print
-    global input
-
-    _exp = []
-    _orig_print = print
-    _orig_input = input
-
-    def _print(string):
-        _exp.append(string)
-        _orig_print(string)
-
-    input = _input('alg/data/Absolute_Element_Sums/%s.txt' % test)
-    print = _print
-
-    expected_result = [int(x) for x in data_from_input('alg/data/Absolute_Element_Sums/expected/%s.txt' % test).split('\n')]
-
-    func()
-
-    print = _orig_print
-    input = _orig_input
-
-    if _exp == expected_result:
-        print('Ok')
-    else:
-        print('False')
-
-    #assert _exp == expected_result, 'You input - %s, expected - %s' % (_exp, expected_result)
 
 
 def func():
+
+    func_testcases(func1)
+
+
+def func1():
     n = int(input().strip())
     array = [int(x) for x in input().strip().split()]
 
     n_q = int(input().strip())
     qs = [int(x) for x in input().strip().split()]
     variant3(n, array, qs)
+func1.__test__ = 'Test5'
+func1.__catalog__ = 'Absolute_Element_Sums'
 
 
 def variant2(n, array, qs):
@@ -108,10 +68,12 @@ def variant3(n, array, qs):
 
     Q = 0
 
-    for q in qs:
+    for num, q in enumerate(qs):
         Q += q
 
-        _, index = closest_value_index(sorted_array, Q * -1)
+        dif = 1
+
+        _, index = closest_value_index(sorted_array, Q * -1 + dif)
 
         sum_n = sum(sorted_array[:index])
         sum_n += Q * index
